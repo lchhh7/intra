@@ -19,7 +19,6 @@ bin/
 
 ### img ###
 *.jpg
-*.png
 *.yml
 
 ### IntelliJ IDEA ###
