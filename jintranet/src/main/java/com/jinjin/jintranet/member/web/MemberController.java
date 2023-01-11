@@ -80,7 +80,7 @@ public class MemberController {
 		model.addAttribute("cnt" , cnt);
 		model.addAttribute("yearList" , yearList);
 		model.addAllAttributes(commutingService.getWorkTime(principal.getMember()));
-		model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+		model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
         return "main/index";
     }
 	
@@ -130,7 +130,7 @@ public class MemberController {
 	public String edit(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		try {
 			model.addAttribute("memberInfo" , new MemberSaveDTO(memberService.findById(principal.getMember().getId())));
-			model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+			model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -154,7 +154,7 @@ public class MemberController {
 	@GetMapping("/member/p/edit.do")
 	public String pEdit(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		try {
-			model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+			model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

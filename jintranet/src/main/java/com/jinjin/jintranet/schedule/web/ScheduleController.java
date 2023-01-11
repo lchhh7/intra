@@ -88,7 +88,7 @@ public class ScheduleController {
             model.addAttribute("vacationDays",  new VacationDaysDTO(vacationDaysUtils.getMemberVacationDays(member, year, month, date)));
 			        
             model.addAttribute("approves", memberService.findApproves());
-            model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+            model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
         } catch (Exception e) {
             e.printStackTrace();
         }

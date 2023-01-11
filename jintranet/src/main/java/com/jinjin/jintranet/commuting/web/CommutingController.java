@@ -65,7 +65,7 @@ public class CommutingController {
 
 	@GetMapping("/commuting.do")
 	public String commuting(Model model , HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) {
-		model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+		model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
 		model.addAttribute("approves", memberService.findApproves());
 		return "commuting/commuting";
 	}

@@ -59,7 +59,7 @@ public class NoticeController {
         	model.addAttribute("searchType" , searchType);
         	model.addAttribute("keyword" , keyword);
         	model.addAttribute("noticeList", noticeService.findNotices(pageable , keyword , searchType));
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class NoticeController {
     public String write(Model model, HttpServletRequest request , 
     		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,7 +102,7 @@ public class NoticeController {
         	notice.setAttaches(attachList);
         	
         	model.addAttribute("notice", notice);
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,7 +127,7 @@ public class NoticeController {
         	notice.setAttaches(attachList);
         	
         	model.addAttribute("notice", notice);
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
         } catch (Exception e) {
         	e.printStackTrace();
         }

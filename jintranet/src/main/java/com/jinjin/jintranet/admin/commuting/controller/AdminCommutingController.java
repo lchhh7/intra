@@ -51,7 +51,7 @@ public class AdminCommutingController {
        // loggingCurrentMethod(LOGGER);
         try {
         	model.addAttribute("members", memberService.findAll());
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
         } catch (Exception e) {
         }
         return "admin-commuting/admin-commuting";

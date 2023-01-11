@@ -53,7 +53,7 @@ public class AdminMemberController {
     @GetMapping(value = "/admin/member.do")
     public String main(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , memberService.findById(principal.getMember().getId() )));
+        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
         } catch (Exception e) {
         	e.printStackTrace();
         }
