@@ -147,7 +147,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("/member/p/edit.do")
-	public String pEdit(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+	public String pEdit(Model model, HttpServletRequest request) throws Exception {
 		try {
 			model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		} catch (Exception e) {

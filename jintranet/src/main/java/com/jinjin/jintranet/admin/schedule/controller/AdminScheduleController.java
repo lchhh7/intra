@@ -46,7 +46,7 @@ public class AdminScheduleController {
      * 일정신청관리(관) > 목록 페이지 이동
      */
     @GetMapping(value = "/admin/schedule.do")
-    public String main(Model model, HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String main(Model model, HttpServletRequest request) throws Exception {
        // loggingCurrentMethod(LOGGER);
         try {
         	model.addAttribute("members", memberService.findAll());

@@ -50,7 +50,6 @@ public class NoticeController {
     
     @GetMapping(value = "/notice.do")
     public String main(Model model, HttpServletRequest request , 
-    		@AuthenticationPrincipal PrincipalDetail principal ,
     		@RequestParam(value = "searchType" , required = false , defaultValue = "") String searchType ,
     		@RequestParam(value ="keyword", required = false , defaultValue ="") String keyword, 
     		@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
@@ -67,8 +66,7 @@ public class NoticeController {
     }
     
     @GetMapping(value = "/notice/write.do")
-    public String write(Model model, HttpServletRequest request , 
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String write(Model model, HttpServletRequest request) throws Exception {
         try {
         	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
             
@@ -93,8 +91,7 @@ public class NoticeController {
     }
    
     @GetMapping("/notice/view.do")
-    public String view(Model model, @RequestParam("id") Integer id, HttpServletRequest request, 
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String view(Model model, @RequestParam("id") Integer id, HttpServletRequest request) throws Exception {
         try {
         	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDelId() == null).toList();
         	Notice notice = noticeService.findById(id);
@@ -118,8 +115,7 @@ public class NoticeController {
 	
     
     @GetMapping(value = "/notice/edit.do")
-    public String edit(Model model, @RequestParam("id") Integer id, HttpServletRequest request, 
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String edit(Model model, @RequestParam("id") Integer id, HttpServletRequest request) throws Exception {
         try {
         	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDelId() == null).toList();
         	Notice notice = noticeService.findById(id);

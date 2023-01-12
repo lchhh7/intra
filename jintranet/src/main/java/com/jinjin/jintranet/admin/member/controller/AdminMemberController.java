@@ -47,7 +47,7 @@ public class AdminMemberController {
      * 사용자관리 > 목록 페이지로 이동
      */
     @GetMapping(value = "/admin/member.do")
-    public String main(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String main(Model model, HttpServletRequest request) throws Exception {
         try {
         	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {

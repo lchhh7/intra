@@ -59,7 +59,7 @@ public class CommutingController {
 	}
 
 	@GetMapping("/commuting.do")
-	public String commuting(Model model , HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) {
+	public String commuting(Model model , HttpServletRequest request) {
 		model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		model.addAttribute("approves", memberService.findApproves());
 		return "commuting/commuting";
