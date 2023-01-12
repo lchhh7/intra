@@ -96,9 +96,9 @@
         <%@ include file="/WEB-INF/views/include/fullcalendar.jsp" %>
     </div>
     <script>
-        const _id = '${member.id}';
-        const _name = '${member.name}';
-        const _color = '${member.useColor}';
+        const _id = '${principal.member.id}';
+        const _name = '${principal.member.name}';
+        const _color = '${principal.member.useColor}';
     </script>
     <script src="<c:url value="/common/js/jscolor.js"/>"></script>
     <script src='<c:url value="/common/js/schedule/schedule-common.js" />'></script>

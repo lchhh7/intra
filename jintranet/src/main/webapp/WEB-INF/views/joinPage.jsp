@@ -20,7 +20,7 @@
                                     <tbody>
                                     <tr>
                                         <th>이름<span class="required">*</span></th>
-                                        <td><input type="text" id="name" name="name" class="inputbox width40" value="${member.name}"></td>
+                                        <td><input type="text" id="name" name="name" class="inputbox width40" value="${principal.member.name}"></td>
                                     </tr>
                                     <tr>
                                         <th>아이디<span class="required">*</span></th>

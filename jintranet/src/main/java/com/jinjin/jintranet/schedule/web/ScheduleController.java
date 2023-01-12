@@ -82,10 +82,10 @@ public class ScheduleController {
             int month = now.getMonthOfYear();
             int date = now.getDayOfMonth();
 			
-           // model.addAttribute("vacationDays",  new VacationDaysDTO(vacationDaysUtils.getMemberVacationDays(member, year, month, date)));
+            model.addAttribute("vacationDays",  new VacationDaysDTO(vacationDaysUtils.getMemberVacationDays(member, year, month, date)));
 			        
-           // model.addAttribute("approves", memberService.findApproves());
-           // model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
+            model.addAttribute("approves", memberService.findApproves());
+            model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,10 +117,10 @@ public class ScheduleController {
         if("m".equals(m)) schedule.setMember(principal.getMember());
         
         try {
-           // List<ScheduleSearchDTO> list = scheduleService.read(schedule);
-           //List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
-          //  map.put("list", list);
-          // map.put("holidays", holidays);
+            List<ScheduleSearchDTO> list = scheduleService.read(schedule);
+           List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
+            map.put("list", list);
+           map.put("holidays", holidays);
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
         	e.printStackTrace();

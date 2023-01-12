@@ -93,8 +93,8 @@
 <script src='<c:url value="/common/js/member.js" />'></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        editForm.position.value = '${member.position}';
-        editForm.department.value = '${member.department}';
+        editForm.position.value = '${principal.member.position}';
+        editForm.department.value = '${principal.member.department}';
     });
 </script>
 </body>

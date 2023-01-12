@@ -60,7 +60,7 @@
 							<col width="13%">
 						</colgroup>
 						<tbody id="vacation-tbody">
-						<%-- <c:forEach var="schedule" items="${member.schedules}">
+						<%-- <c:forEach var="schedule" items="${principal.member.schedules}">
 							<tr class="tbbody" onclick="schedule('+ e.id +')">
 								<td>${schedule.type }</td>
 								<td>${fn:split(schedule.strDt,'T')[0]} ~ ${fn:split(schedule.endDt,'T')[0]}</td>
