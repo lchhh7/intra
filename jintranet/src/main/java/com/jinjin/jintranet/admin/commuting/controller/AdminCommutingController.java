@@ -21,24 +21,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.jinjin.jintranet.common.MenuUtils;
 import com.jinjin.jintranet.common.PageUtils;
 import com.jinjin.jintranet.commuting.service.CommutingRequestService;
 import com.jinjin.jintranet.member.service.MemberService;
 import com.jinjin.jintranet.model.CommutingRequest;
+import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
 public class AdminCommutingController {
 	
-	private MenuUtils menuUtils;
-	
 	private MemberService memberService;
+	
+	private ScheduleService scheduleService;
 	
 	private final CommutingRequestService commutingRequestService;
 	
-	public AdminCommutingController(MenuUtils menuUtils, MemberService memberService,CommutingRequestService commutingRequestService) {
-		this.menuUtils = menuUtils;
+	public AdminCommutingController(MemberService memberService,ScheduleService scheduleService,CommutingRequestService commutingRequestService) {
+		this.scheduleService = scheduleService;
 		this.memberService = memberService;
 		this.commutingRequestService = commutingRequestService;
 	}
@@ -51,7 +51,7 @@ public class AdminCommutingController {
        // loggingCurrentMethod(LOGGER);
         try {
         	model.addAttribute("members", memberService.findAll());
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
         }
         return "admin-commuting/admin-commuting";

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,12 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.jinjin.jintranet.common.FileUtils;
-import com.jinjin.jintranet.common.MenuUtils;
 import com.jinjin.jintranet.member.service.MemberService;
 import com.jinjin.jintranet.model.Notice;
 import com.jinjin.jintranet.model.NoticeAttach;
 import com.jinjin.jintranet.notice.dto.NoticeSaveDTO;
 import com.jinjin.jintranet.notice.service.NoticeService;
+import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 
@@ -38,15 +37,15 @@ public class NoticeController {
     
     private MemberService memberService;
     
+    private ScheduleService scheduleService;
+    
    private final NoticeService noticeService;
     
-    private MenuUtils menuUtils;
     
-    public NoticeController(NoticeService noticeService, 
-    		MenuUtils menuUtils,MemberService memberService) {
+    public NoticeController(NoticeService noticeService ,MemberService memberService,ScheduleService scheduleService) {
     	this.noticeService = noticeService;
-    	this.menuUtils = menuUtils;
     	this.memberService = memberService;
+    	this.scheduleService = scheduleService;
     }
     
     @GetMapping(value = "/notice.do")
@@ -59,7 +58,7 @@ public class NoticeController {
         	model.addAttribute("searchType" , searchType);
         	model.addAttribute("keyword" , keyword);
         	model.addAttribute("noticeList", noticeService.findNotices(pageable , keyword , searchType));
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +70,7 @@ public class NoticeController {
     public String write(Model model, HttpServletRequest request , 
     		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,7 +101,7 @@ public class NoticeController {
         	notice.setAttaches(attachList);
         	
         	model.addAttribute("notice", notice);
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,7 +126,7 @@ public class NoticeController {
         	notice.setAttaches(attachList);
         	
         	model.addAttribute("notice", notice);
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
         	e.printStackTrace();
         }

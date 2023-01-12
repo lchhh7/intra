@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +21,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.jinjin.jintranet.common.MenuUtils;
 import com.jinjin.jintranet.commuting.service.CommutingService;
 import com.jinjin.jintranet.member.dto.MemberEditDTO;
 import com.jinjin.jintranet.member.dto.MemberSaveDTO;
 import com.jinjin.jintranet.member.dto.PasswordEditDTO;
 import com.jinjin.jintranet.member.service.MemberService;
 import com.jinjin.jintranet.model.Commuting;
-import com.jinjin.jintranet.model.Notice;
 import com.jinjin.jintranet.model.Schedule;
 import com.jinjin.jintranet.notice.dto.NoticeSearchDTO;
 import com.jinjin.jintranet.notice.service.NoticeService;
@@ -48,16 +45,14 @@ public class MemberController {
 	
 	private NoticeService noticeService;
 	
-	private MenuUtils menuUtils;
 	
 	
 	public MemberController(MemberService memberService, ScheduleService scheduleService,
-			CommutingService commutingService, NoticeService noticeService ,MenuUtils menuUtils) {
+			CommutingService commutingService, NoticeService noticeService) {
 		this.memberService = memberService;
 		this.scheduleService = scheduleService;
 		this.commutingService = commutingService;
 		this.noticeService = noticeService;
-		this.menuUtils = menuUtils;
 	}
 
 	@GetMapping("/login.do")
@@ -79,8 +74,8 @@ public class MemberController {
 		model.addAttribute("vacation" , vacation);
 		model.addAttribute("cnt" , cnt);
 		model.addAttribute("yearList" , yearList);
+		model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		model.addAllAttributes(commutingService.getWorkTime(principal.getMember()));
-		model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
         return "main/index";
     }
 	
@@ -130,7 +125,7 @@ public class MemberController {
 	public String edit(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		try {
 			model.addAttribute("memberInfo" , new MemberSaveDTO(memberService.findById(principal.getMember().getId())));
-			model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+			model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -154,7 +149,7 @@ public class MemberController {
 	@GetMapping("/member/p/edit.do")
 	public String pEdit(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		try {
-			model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+			model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

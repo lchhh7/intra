@@ -1,11 +1,9 @@
 package com.jinjin.jintranet.admin.schedule.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,16 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.jinjin.jintranet.common.MenuUtils;
 import com.jinjin.jintranet.common.PageUtils;
-import com.jinjin.jintranet.member.dto.MemberDefaultDTO;
 import com.jinjin.jintranet.member.service.MemberService;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Schedule;
@@ -37,14 +32,12 @@ import com.jinjin.jintranet.security.auth.PrincipalDetail;
 @Controller
 public class AdminScheduleController {
 	
-	private MenuUtils menuUtils;
 	
 	private MemberService memberService;
 	
 	private final ScheduleService scheduleService;
     
-    public AdminScheduleController(MenuUtils menuUtils , MemberService memberService, ScheduleService scheduleService) {
-    	this.menuUtils = menuUtils;
+    public AdminScheduleController(MemberService memberService, ScheduleService scheduleService) {
     	this.memberService = memberService;
     	this.scheduleService = scheduleService;
     }
@@ -57,7 +50,7 @@ public class AdminScheduleController {
        // loggingCurrentMethod(LOGGER);
         try {
         	model.addAttribute("members", memberService.findAll());
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
         }
         return "admin-schedule/admin-schedule";

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jinjin.jintranet.common.DateUtils;
-import com.jinjin.jintranet.common.MenuUtils;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestInsertDTO;
 import com.jinjin.jintranet.commuting.dto.CommutingSelectDTO;
@@ -50,22 +48,19 @@ public class CommutingController {
 	
 	private CommutingRequestService commutingRequestService;
 	
-	private MenuUtils menuUtils;
 	
 	public CommutingController(CommutingService commutingService, ScheduleService scheduleService,
-			MemberService memberService, HolidayService holidayService, CommutingRequestService commutingRequestService,
-			MenuUtils menuUtils) {
+			MemberService memberService, HolidayService holidayService, CommutingRequestService commutingRequestService) {
 		this.commutingService = commutingService;
 		this.scheduleService = scheduleService;
 		this.memberService = memberService;
 		this.holidayService = holidayService;
 		this.commutingRequestService = commutingRequestService;
-		this.menuUtils = menuUtils;
 	}
 
 	@GetMapping("/commuting.do")
 	public String commuting(Model model , HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) {
-		model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+		model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		model.addAttribute("approves", memberService.findApproves());
 		return "commuting/commuting";
 	}

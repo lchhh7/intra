@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jinjin.jintranet.common.DateUtils;
-import com.jinjin.jintranet.common.MenuUtils;
 import com.jinjin.jintranet.common.VacationDaysUtils;
 import com.jinjin.jintranet.holiday.service.HolidayService;
 import com.jinjin.jintranet.member.dto.VacationDaysDTO;
@@ -57,16 +56,14 @@ public class ScheduleController {
 	
 	private HolidayService holidayService;
 	
-	private MenuUtils menuUtils;
 	
 	private VacationDaysUtils vacationDaysUtils;
 	
 	 public ScheduleController(MemberService memberService, ScheduleService scheduleService,
-			HolidayService holidayService, MenuUtils menuUtils , VacationDaysUtils vacationDaysUtils) {
+			HolidayService holidayService , VacationDaysUtils vacationDaysUtils) {
 		this.memberService = memberService;
 		this.scheduleService = scheduleService;
 		this.holidayService = holidayService;
-		this.menuUtils = menuUtils;
 		this.vacationDaysUtils = vacationDaysUtils;
 	}
 
@@ -88,7 +85,7 @@ public class ScheduleController {
             model.addAttribute("vacationDays",  new VacationDaysDTO(vacationDaysUtils.getMemberVacationDays(member, year, month, date)));
 			        
             model.addAttribute("approves", memberService.findApproves());
-            model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+            model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
             e.printStackTrace();
         }

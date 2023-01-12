@@ -14,25 +14,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.jinjin.jintranet.common.MenuUtils;
 import com.jinjin.jintranet.common.PageUtils;
 import com.jinjin.jintranet.member.dto.EditByAdminDTO;
-import com.jinjin.jintranet.member.dto.MemberDefaultDTO;
-import com.jinjin.jintranet.member.dto.MemberSaveDTO;
 import com.jinjin.jintranet.member.dto.MemberSearchDTO;
 import com.jinjin.jintranet.member.dto.MemberShowDTO;
 import com.jinjin.jintranet.member.service.MemberService;
+import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
@@ -40,11 +36,11 @@ public class AdminMemberController {
 	
 	private MemberService memberService;
 
-	private MenuUtils menuUtils;
+	private ScheduleService scheduleService;
 	
-	public AdminMemberController(MemberService memberService, MenuUtils menuUtils) {
+	public AdminMemberController(MemberService memberService, ScheduleService scheduleService) {
 		this.memberService = memberService;
-		this.menuUtils = menuUtils;
+		this.scheduleService = scheduleService;
 	}
 
 	/**
@@ -53,7 +49,7 @@ public class AdminMemberController {
     @GetMapping(value = "/admin/member.do")
     public String main(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
-        	model.addAllAttributes(menuUtils.getDefaultMenu(request , principal.getMember()));
+        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
         	e.printStackTrace();
         }

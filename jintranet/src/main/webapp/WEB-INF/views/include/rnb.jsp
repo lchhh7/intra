@@ -7,14 +7,14 @@
                 <div class="clearfix">
                     <div class="pficon"></div>
                     <div class="pfname clearfix">
-                        <p class="position">${member.position}</p>
-                        <p class="name">${member.name}</p>
-                        <p class="mailadd">${member.memberId}@jinjin.co.kr</p>
+                        <p class="position">${principal.member.position}</p>
+                        <p class="name">${principal.member.name}</p>
+                        <p class="mailadd">${principal.member.memberId}@jinjin.co.kr</p>
                     </div>
                 </div>
                 <div class="bottom_pf clearfix">
-                    <p class="dept">${member.department}</p>
-                    <p class="num">내선번호 : ${member.phoneNo}</p>
+                    <p class="dept">${principal.member.department}</p>
+                    <p class="num">내선번호 : ${principal.member.phoneNo}</p>
                 </div>
             </div>
             <a class="btn jjblue" href="<c:url value='/member/edit.do'/>">정보수정</a>
