@@ -23,6 +23,7 @@ import com.jinjin.jintranet.member.repository.MemberDslRepository;
 import com.jinjin.jintranet.member.repository.MemberRepository;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.RoleType;
+import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Service
 public class MemberService {
@@ -55,8 +56,8 @@ public class MemberService {
 	}
 	
 	@Transactional
-	public void edit(int id, MemberEditDTO requestMember) {
-		Member member = memberRepository.findById(id)
+	public void edit(PrincipalDetail principal, MemberEditDTO requestMember) {
+		Member member = memberRepository.findById(principal.getMember().getId())
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("사용자를 찾을 수 없습니다.");
 				});
@@ -67,6 +68,9 @@ public class MemberService {
 		member.setPhoneNo(requestMember.getPhoneNo());
 		member.setMobileNo(requestMember.getMobileNo());
 		member.setUseColor(requestMember.getUseColor());
+		
+		principal.setMember(member);
+		
 	}
 	
 	@Transactional

@@ -27,7 +27,6 @@ const editMember = function () {
 			mobileNo: editForm.mobileNo.value,
 			useColor: editForm.color.value
 		}),
-		dataType: 'json',
 		contentType: 'application/json; charset:UTF-8'
 	})
 		.done(function (data) {

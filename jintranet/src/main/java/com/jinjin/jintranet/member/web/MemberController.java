@@ -141,7 +141,7 @@ public class MemberController {
          	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
          }
 		
-		memberService.edit(principal.getMember().getId(), memberDTO);
+		memberService.edit(principal, memberDTO);
 
 		return new ResponseEntity<String>("정상적으로 정보가 수정되었습니다.",HttpStatus.OK);
 	}
