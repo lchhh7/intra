@@ -13,7 +13,7 @@
 			<div class="mline mb10">
 				<div>
 					<div class="floatleft mhalf mr5">
-						<div class="floatleft mhalf_m">
+						<div class="floatleft mhalf mr5">
 							<select class="selectbox width100" id="search-year">
 								<option value="">전체</option>
 								<c:forEach var="yearList" items="${yearList}">
@@ -21,10 +21,8 @@
 								</c:forEach>
 							</select>
 						</div>
-					</div>
-
-					<div>
-						<div class="floatleft">
+						
+						<div class="floatleft mhalf_m">
 							<a role="button" class="btn jjblue" onclick="searching()">검색</a>
 						</div>
 					</div>
