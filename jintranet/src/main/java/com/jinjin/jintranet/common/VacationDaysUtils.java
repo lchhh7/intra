@@ -40,7 +40,7 @@ public class VacationDaysUtils {
 
         double total = 0;
         
-        LocalDate doe = new LocalDate(member.getSdf().getYear() , member.getSdf().getMonthValue(), member.getSdf().getDayOfMonth());
+        LocalDate doe = new LocalDate(member.getCrtDt().getYear() , member.getCrtDt().getMonthValue(), member.getCrtDt().getDayOfMonth());
         int yearsOfService = doe.getYear();
         
         if(curYear < yearsOfService) {

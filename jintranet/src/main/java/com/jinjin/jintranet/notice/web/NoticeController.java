@@ -89,7 +89,7 @@ public class NoticeController {
     @GetMapping("/notice/view.do")
     public String view(Model model, @RequestParam("id") Integer id, HttpServletRequest request) throws Exception {
         try {
-        	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDelId() == null).toList();
+        	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDeletedBy() == null).toList();
         	Notice notice = noticeService.findById(id);
         	notice.setAttaches(attachList);
         	
@@ -113,7 +113,7 @@ public class NoticeController {
     @GetMapping(value = "/notice/edit.do")
     public String edit(Model model, @RequestParam("id") Integer id, HttpServletRequest request) throws Exception {
         try {
-        	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDelId() == null).toList();
+        	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDeletedBy() == null).toList();
         	Notice notice = noticeService.findById(id);
         	notice.setAttaches(attachList);
         	
@@ -126,7 +126,8 @@ public class NoticeController {
     }
 
     @PostMapping("/notice/edit.do")
-    public ResponseEntity<String> edit(@Validated @RequestBody NoticeSaveDTO dto, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<String> edit(@Validated @RequestBody NoticeSaveDTO dto,
+    		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors()) {
         	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -134,7 +135,7 @@ public class NoticeController {
         if ("<p>&nbsp;</p>".equals(dto.getContent())) {
             return new ResponseEntity<>("내용을 입력해주세요.", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(noticeService.edit(dto) , HttpStatus.OK);
+        return new ResponseEntity<>(noticeService.edit(dto,principal) , HttpStatus.OK);
     }
     
     @PostMapping("/notice/upload.do")

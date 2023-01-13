@@ -20,7 +20,7 @@ import lombok.Setter;
 public class NoticeAttachDTO {
 	
 	private Integer id;
-
+	
 	private String path;
 	
 	private String originalFileName;
@@ -40,7 +40,6 @@ public class NoticeAttachDTO {
 
 	public NoticeAttach DtotoEntity() {
 		NoticeAttach attach = new NoticeAttach();
-		attach.setCrtId(this.getId());
 		attach.setPath(this.getPath());
 		attach.setOriginalFileName(this.getOriginalFileName());
 		attach.setStoredFileName(this.getStoredFileName());

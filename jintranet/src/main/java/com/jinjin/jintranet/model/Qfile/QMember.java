@@ -10,7 +10,7 @@ import com.jinjin.jintranet.model.PositionType;
 import com.jinjin.jintranet.model.RoleType;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -27,15 +27,30 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
-    public final EnumPath<DepartmentType> department = createEnum("department", DepartmentType.class);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final DatePath<java.time.LocalDate> edf = createDate("edf", java.time.LocalDate.class);
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> crtDt = _super.crtDt;
+
+    //inherited
+    public final StringPath deletedBy = _super.deletedBy;
+
+    public final EnumPath<DepartmentType> department = createEnum("department", DepartmentType.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final StringPath memberId = createString("memberId");
 
     public final StringPath mobileNo = createString("mobileNo");
+
+    //inherited
+    public final StringPath ModifiedBy = _super.ModifiedBy;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
 
     public final StringPath name = createString("name");
 
@@ -47,7 +62,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final EnumPath<RoleType> role = createEnum("role", RoleType.class);
 
-    public final DatePath<java.time.LocalDate> sdf = createDate("sdf", java.time.LocalDate.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> udtDt = _super.udtDt;
 
     public final StringPath useColor = createString("useColor");
 

@@ -192,7 +192,8 @@ public class ScheduleController {
 
     // 일정관리 > 일정 수정
     @PutMapping(value = "/schedule/{id}.do")
-    public ResponseEntity<String> edit(@PathVariable("id") Integer id,@Validated @RequestBody ScheduleUpdateDTO scheduleDTO, BindingResult bindingResult ) throws Exception {
+    public ResponseEntity<String> edit(@PathVariable("id") Integer id,@Validated @RequestBody ScheduleUpdateDTO scheduleDTO,
+    		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult ) throws Exception {
         try {
         	 if (bindingResult.hasErrors()) {
              	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
@@ -202,7 +203,7 @@ public class ScheduleController {
                 return new ResponseEntity<>("일정 종료일과 시작일을 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
             }
             
-            scheduleService.edit(id, scheduleDTO.DTOtoEntity());
+            scheduleService.edit(id, scheduleDTO.DTOtoEntity(), principal);
             return new ResponseEntity<>("일정을 정상적으로 수정했습니다.", HttpStatus.OK);
         } catch (Exception e) {
         	e.printStackTrace();
@@ -212,7 +213,8 @@ public class ScheduleController {
     // 일정관리 > 일정 취소요청
      
     @PutMapping(value = "/schedule/cancel/{id}.do")
-    public ResponseEntity<String> cancel(@PathVariable("id") Integer id, @RequestBody ScheduleCancelDTO scheduleDTO) throws Exception {
+    public ResponseEntity<String> cancel(@PathVariable("id") Integer id, @RequestBody ScheduleCancelDTO scheduleDTO, 
+    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
             Schedule schedule = scheduleService.findById(id);
             if (schedule == null) { return new ResponseEntity<>("유효하지 않은 일정입니다.", HttpStatus.BAD_REQUEST);
@@ -227,7 +229,7 @@ public class ScheduleController {
                 return new ResponseEntity<>("지난 일정은 취소요청 할 수 없습니다.", HttpStatus.BAD_REQUEST);
             }
             
-            scheduleService.cancel(id, scheduleDTO.DTOtoEntity());
+            scheduleService.cancel(id, scheduleDTO.DTOtoEntity(),principal);
             return new ResponseEntity<>("일정을 정상적으로 취소 요청했습니다.", HttpStatus.OK);
         } catch (Exception e) {
         	e.printStackTrace();
@@ -238,9 +240,9 @@ public class ScheduleController {
     
     // 일정관리 > 일정 삭제
     @DeleteMapping(value = "/schedule/{id}.do")
-    public ResponseEntity<String> delete(@PathVariable("id") Integer id) throws Exception {
+    public ResponseEntity<String> delete(@PathVariable("id") Integer id, @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
-            scheduleService.delete(id);
+            scheduleService.delete(id, principal);
             return new ResponseEntity<>("일정을 정상적으로 삭제했습니다.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("일정 삭제 중 오류가 발생했습니다.", HttpStatus.CONFLICT);

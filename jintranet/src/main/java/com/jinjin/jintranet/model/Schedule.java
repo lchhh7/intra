@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jinjin.jintranet.common.DateUtils;
 import com.jinjin.jintranet.schedule.dto.ScheduleInsertDTO;
 
@@ -27,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Schedule {
+public class Schedule extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,11 +49,6 @@ public class Schedule {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "Asia/Seoul")
 	private LocalDateTime endDt;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "Asia/Seoul")
-	private LocalDateTime delDt;
-	
-	private Integer delId;
 	
 	@OneToOne
 	@JoinColumn(name = "approveId")
@@ -80,8 +74,8 @@ public class Schedule {
 	
 	@Builder
 	public Schedule(Integer id, String type, Member member, String title, String content, LocalDateTime strDt,
-			LocalDateTime endDt, LocalDateTime delDt, Integer delId, Member approve,
-			LocalDate approveDt, String status, String cancelReason, String color) {
+			LocalDateTime endDt, Member approve, LocalDate approveDt, String status, String cancelReason,
+			String color) {
 		this.id = id;
 		this.type = type;
 		this.member = member;
@@ -89,12 +83,12 @@ public class Schedule {
 		this.content = content;
 		this.strDt = strDt;
 		this.endDt = endDt;
-		this.delDt = delDt;
-		this.delId = delId;
 		this.approve = approve;
 		this.approveDt = approveDt;
 		this.status = status;
 		this.cancelReason = cancelReason;
 		this.color = color;
 	}
+	
+	
 }

@@ -27,6 +27,8 @@ public class QSchedule extends EntityPathBase<Schedule> {
 
     public static final QSchedule schedule = new QSchedule("schedule");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final QMember approve;
 
     public final DatePath<java.time.LocalDate> approveDt = createDate("approveDt", java.time.LocalDate.class);
@@ -37,15 +39,26 @@ public class QSchedule extends EntityPathBase<Schedule> {
 
     public final StringPath content = createString("content");
 
-    public final DateTimePath<java.time.LocalDateTime> delDt = createDateTime("delDt", java.time.LocalDateTime.class);
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
 
-    public final NumberPath<Integer> delId = createNumber("delId", Integer.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> crtDt = _super.crtDt;
+
+    //inherited
+    public final StringPath deletedBy = _super.deletedBy;
 
     public final DateTimePath<java.time.LocalDateTime> endDt = createDateTime("endDt", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final QMember member;
+
+    //inherited
+    public final StringPath ModifiedBy = _super.ModifiedBy;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
 
     public final StringPath status = createString("status");
 
@@ -54,6 +67,9 @@ public class QSchedule extends EntityPathBase<Schedule> {
     public final StringPath title = createString("title");
 
     public final StringPath type = createString("type");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> udtDt = _super.udtDt;
 
     public QSchedule(String variable) {
         this(Schedule.class, forVariable(variable), INITS);

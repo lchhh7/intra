@@ -1,7 +1,5 @@
 package com.jinjin.jintranet.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,10 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-public class Member {
+public class Member extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,13 +44,6 @@ public class Member {
 
 	private String useColor;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@CreationTimestamp
-	private LocalDate sdf;
-	
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate edf;
-
 	// 시큐리티 ROLE 용
 	@Enumerated(EnumType.STRING)
 	private RoleType role;

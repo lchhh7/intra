@@ -7,10 +7,8 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jinjin.jintranet.commuting.dto.CommuteInsertDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestInsertDTO;
 import com.jinjin.jintranet.commuting.dto.CommutingsInterface;
 import com.jinjin.jintranet.commuting.repository.CommutingRepository;
@@ -107,6 +105,7 @@ public class CommutingService {
 		commutingRequest.setType(dto.getType());
 		commutingRequest.setMember(member);
 		commutingRequest.setStatus("R");
+		commutingRequest.setCreatedBy(member.getName());
 		commutingRequestRepository.save(commutingRequest);
 	}
 }

@@ -1,6 +1,6 @@
 package com.jinjin.jintranet.notice.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Notice;
@@ -22,7 +22,7 @@ public class NoticeSearchDTO {
 	
 	private Member member;
 	
-	private LocalDate crtDt;
+	private LocalDateTime crtDt;
 	
 	private Integer attachesCnt;
 	
@@ -31,6 +31,6 @@ public class NoticeSearchDTO {
 		this.title = notice.getTitle();
 		this.member = notice.getMember();
 		this.crtDt = notice.getCrtDt();
-		this.attachesCnt = (int) notice.getAttaches().stream().filter(a -> a.getDelId() ==null).count() ;
+		this.attachesCnt = (int) notice.getAttaches().stream().filter(a -> a.getDeletedBy() ==null).count() ;
 	}
 }

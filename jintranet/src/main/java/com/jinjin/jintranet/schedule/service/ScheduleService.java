@@ -21,6 +21,7 @@ import com.jinjin.jintranet.schedule.dto.ScheduleSearchDTO;
 import com.jinjin.jintranet.schedule.dto.todaySchedulesDTO;
 import com.jinjin.jintranet.schedule.repository.ScheduleDslRepository;
 import com.jinjin.jintranet.schedule.repository.ScheduleRepository;
+import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Service
 public class ScheduleService {
@@ -48,11 +49,12 @@ public class ScheduleService {
 		Schedule schedule = new Schedule(scheduleDTO , approve);
 		schedule.setStatus("R");
 		schedule.setMember(member);
+		schedule.setCreatedBy(member.getName());
 		scheduleRepository.save(schedule);
 	}
 	
 	@Transactional
-	public void edit(int id,Schedule requestSchedule) {
+	public void edit(int id,Schedule requestSchedule , PrincipalDetail principal) {
 		Schedule schedule = scheduleRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("일정을 찾을 수 없습니다.");
@@ -62,10 +64,12 @@ public class ScheduleService {
 		schedule.setContent(requestSchedule.getContent());
 		schedule.setStrDt(requestSchedule.getStrDt());
 		schedule.setEndDt(requestSchedule.getEndDt());
+		schedule.setModifiedBy(principal.getMember().getName());
+		
 	}
 	
 	@Transactional
-	public void cancel(int id,Schedule requestSchedule) {
+	public void cancel(int id,Schedule requestSchedule, PrincipalDetail principal) {
 		Schedule schedule = scheduleRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("일정을 찾을 수 없습니다.");
@@ -73,6 +77,7 @@ public class ScheduleService {
 		
 		schedule.setCancelReason(requestSchedule.getCancelReason());
 		schedule.setStatus("C");
+		schedule.setModifiedBy(principal.getMember().getName());
 	}
 	
 	/*@Transactional
@@ -90,13 +95,13 @@ public class ScheduleService {
 		System.out.println("==========================================3");
 	}*/
 	@Transactional
-	public void delete(Integer id) {
+	public void delete(Integer id,PrincipalDetail principal) {
 		Schedule schedule = scheduleRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("일정을 찾을 수 없습니다.");
 				});
-		schedule.setDelDt(LocalDateTime.now());
 		schedule.setStatus("D");
+		schedule.setDeletedBy(principal.getMember().getName());
 	}
 
 
@@ -144,8 +149,7 @@ public class ScheduleService {
 		schedule.setStatus(requestSchedule.getStatus());
 		schedule.setApproveDt(LocalDate.now());
 		if("D".equals(requestSchedule.getStatus())) {
-			schedule.setDelDt(LocalDateTime.now());
-			schedule.setDelId(m.getId());
+			schedule.setDeletedBy(m.getName());
 		}
 	}
 	

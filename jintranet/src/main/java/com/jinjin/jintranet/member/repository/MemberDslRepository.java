@@ -32,7 +32,7 @@ public class MemberDslRepository {
 						member.position , member.department
 						, member.phoneNo , member.mobileNo))
 				.from(member)
-				.where(searchNameEq(n) , searchPositionEq(p) , searchDepartmentEq(d) , member.edf.isNull())
+				.where(searchNameEq(n) , searchPositionEq(p) , searchDepartmentEq(d) , member.deletedBy.isNull())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.fetch();

@@ -29,7 +29,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-public class Notice {
+public class Notice extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,18 +63,9 @@ public class Notice {
 		noticeAttach.setNotice(null);
 	}*/
 	
-	private Integer delId;
-	
-	private LocalDate crtDt;
-	
-	private LocalDate udtDt;
-	
-	private LocalDate delDt;
-	
 	@Builder
 	public Notice(Integer id, String title, String content, LocalDateTime postStrDt, LocalDateTime postEndDt,
-			Member member, List<NoticeAttach> attaches, Integer delId, LocalDate crtDt, LocalDate udtDt,
-			LocalDate delDt) {
+			Member member, List<NoticeAttach> attaches) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
@@ -82,9 +73,7 @@ public class Notice {
 		this.postEndDt = postEndDt;
 		this.member = member;
 		this.attaches = attaches;
-		this.delId = delId;
-		this.crtDt = crtDt;
-		this.udtDt = udtDt;
-		this.delDt = delDt;
 	}
+	
+	
 }

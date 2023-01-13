@@ -30,7 +30,7 @@ public class NoticeDslRepository {
 		//그래서 페이징 따로만들어서 in하는 방식으로 변경해서 n+1로 해결하고 메모리 문제도 해결함
 		
 		List<Integer> ids = jPAQueryFactory.select(notice.id).from(notice)
-				.where(notice.delDt.isNull() , notice.delId.isNull() ,searchTypeEq(searchType,keyword))
+				.where(notice.deletedBy.isNull() ,searchTypeEq(searchType,keyword))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.orderBy(notice.id.desc())
@@ -39,7 +39,7 @@ public class NoticeDslRepository {
 		List<NoticeSearchDTO> list = jPAQueryFactory.selectFrom(notice).distinct()
 				.leftJoin(notice.attaches , noticeAttach)
 				.fetchJoin()
-				.where(notice.delDt.isNull() , notice.delId.isNull() , searchTypeEq(searchType,keyword) , notice.id.in(ids))
+				.where(notice.deletedBy.isNull() , searchTypeEq(searchType,keyword) , notice.id.in(ids))
 				.orderBy(notice.id.desc())
 				.fetch()
 				.stream().map(n -> new NoticeSearchDTO(n)).toList();
@@ -47,7 +47,7 @@ public class NoticeDslRepository {
 		Long count = jPAQueryFactory
 				.select(notice.count())
 				.from(notice)
-				.where(notice.delDt.isNull() , notice.delId.isNull() , searchTypeEq(searchType,keyword))
+				.where(notice.deletedBy.isNull() , searchTypeEq(searchType,keyword))
 				.fetchOne();
 		
 		return new PageImpl<>(list , pageable ,count);

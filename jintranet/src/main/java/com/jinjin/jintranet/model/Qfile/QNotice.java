@@ -8,7 +8,6 @@ import com.jinjin.jintranet.model.Notice;
 import com.jinjin.jintranet.model.NoticeAttach;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.DatePath;
 import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.ListPath;
@@ -29,19 +28,30 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public static final QNotice notice = new QNotice("notice");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final ListPath<NoticeAttach, QNoticeAttach> attaches = this.<NoticeAttach, QNoticeAttach>createList("attaches", NoticeAttach.class, QNoticeAttach.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
 
-    public final DatePath<java.time.LocalDate> crtDt = createDate("crtDt", java.time.LocalDate.class);
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
 
-    public final DatePath<java.time.LocalDate> delDt = createDate("delDt", java.time.LocalDate.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> crtDt = _super.crtDt;
 
-    public final NumberPath<Integer> delId = createNumber("delId", Integer.class);
+    //inherited
+    public final StringPath deletedBy = _super.deletedBy;
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final QMember member;
+
+    //inherited
+    public final StringPath ModifiedBy = _super.ModifiedBy;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
 
     public final DateTimePath<java.time.LocalDateTime> postEndDt = createDateTime("postEndDt", java.time.LocalDateTime.class);
 
@@ -49,7 +59,8 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public final StringPath title = createString("title");
 
-    public final DatePath<java.time.LocalDate> udtDt = createDate("udtDt", java.time.LocalDate.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> udtDt = _super.udtDt;
 
     public QNotice(String variable) {
         this(Notice.class, forVariable(variable), INITS);

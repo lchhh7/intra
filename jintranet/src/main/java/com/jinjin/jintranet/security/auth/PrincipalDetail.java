@@ -57,7 +57,7 @@ public class PrincipalDetail implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		if(member.getEdf() != null) {
+		if(member.getDeletedBy() != null) {
 			return false;
 		}
 		return true;

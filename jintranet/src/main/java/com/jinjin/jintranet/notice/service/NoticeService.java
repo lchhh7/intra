@@ -3,6 +3,7 @@ package com.jinjin.jintranet.notice.service;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import com.jinjin.jintranet.notice.dto.NoticeSearchDTO;
 import com.jinjin.jintranet.notice.repository.NoticeAttachRepository;
 import com.jinjin.jintranet.notice.repository.NoticeDslRepository;
 import com.jinjin.jintranet.notice.repository.NoticeRepository;
+import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Service
 public class NoticeService {
@@ -68,7 +70,7 @@ public class NoticeService {
 			e.printStackTrace();
 		}
 		notice.setMember(member);
-		notice.setCrtDt(LocalDate.now());
+		notice.setCreatedBy(member.getName());
 		notice.setAttaches(dto.getAttaches().stream().map(m -> m.DtotoEntity()).toList());
 		notice.getAttaches().stream().forEach(m -> m.setNotice(notice));
 		noticeRepository.save(notice);
@@ -76,14 +78,14 @@ public class NoticeService {
 	}
 
 	@Transactional
-	public String edit(NoticeSaveDTO dto) {
+	public String edit(NoticeSaveDTO dto, PrincipalDetail principal) {
 		Notice notice = noticeRepository.findById(dto.getId()).orElseThrow(() -> {
 			return new IllegalArgumentException("공지사항을 찾을 수 없습니다.");
 		}); // 영속화
 
 		notice.setTitle(dto.getTitle());
 		notice.setContent(dto.getContent());
-		notice.setUdtDt(LocalDate.now());
+		notice.setModifiedBy(principal.getMember().getName());
 		notice.setAttaches(dto.getAttaches().stream().map(m -> m.DtotoEntity()).toList());
 		notice.getAttaches().stream().forEach(m -> m.setNotice(notice));
 		return String.valueOf(dto.getId());
@@ -94,8 +96,7 @@ public class NoticeService {
 		Notice notice = noticeRepository.findById(dto.getId()).orElseThrow(() -> {
 			return new IllegalArgumentException("공지사항을 찾을 수 없습니다.");
 		}); // 영속화
-		notice.setDelDt(LocalDate.now());
-		notice.setDelId(member.getId());
+		notice.setDeletedBy(member.getName());
 	}
 
 	@Transactional
@@ -116,8 +117,7 @@ public class NoticeService {
 				return new IllegalArgumentException("공지사항을 찾을 수 없습니다.");
 			}); // 영속화
 			
-			attach.setDelDt(LocalDate.now());
-			attach.setDelId(member.getId());
+			attach.setDeletedBy(member.getName());
 			return new ResponseEntity<>("첨부파일이 정상적으로 삭제되었습니다." ,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

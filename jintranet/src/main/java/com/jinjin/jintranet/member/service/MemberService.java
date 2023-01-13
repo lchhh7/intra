@@ -6,9 +6,13 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +44,11 @@ public class MemberService {
 	@Transactional
 	public int write(MemberSaveDTO memberDTO) {
 		Member member = memberDTO.DtoToEntity();
-		
 		String rawPassword = member.getPassword();
 		String encPassword = encoder.encode(rawPassword);
 		member.setPassword(encPassword);
 		member.setRole(RoleType.USER);
-		//if(member.getRole() == null) member.setRole(RoleType.USER);
+		member.setCreatedBy(member.getName());
 		try {
 			memberRepository.save(member);
 			return 1;
@@ -68,13 +71,14 @@ public class MemberService {
 		member.setPhoneNo(requestMember.getPhoneNo());
 		member.setMobileNo(requestMember.getMobileNo());
 		member.setUseColor(requestMember.getUseColor());
+		member.setModifiedBy(requestMember.getName());
 		
 		principal.setMember(member);
 		
 	}
 	
 	@Transactional
-	public void adminEdit(int id, EditByAdminDTO requestMember) {
+	public void adminEdit(int id, EditByAdminDTO requestMember,PrincipalDetail principal) {
 		Member member = memberRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("사용자를 찾을 수 없습니다.");
@@ -87,6 +91,7 @@ public class MemberService {
 		member.setMobileNo(requestMember.getMobileNo());
 		member.setUseColor(requestMember.getUseColor());
 		member.setRole(requestMember.getRole());
+		member.setModifiedBy(principal.getMember().getName());
 	}
 	
 	@Transactional
@@ -111,13 +116,17 @@ public class MemberService {
 	}
 	
 	@Transactional
-	public void delete(int id) {
+	public void delete(int id,PrincipalDetail principal) {
 		Member member = memberRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("사용자를 찾을 수 없습니다.");
 				});
 		
-		member.setEdf(LocalDate.now());
+		member.setDeletedBy(principal.getMember().getName());
+		
+		if(member.getId() == principal.getMember().getId()) {
+			SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+		}
 	}
 	
 	
@@ -135,7 +144,7 @@ public class MemberService {
 	
 	@Transactional
 	public List<MemberViewDTO> findAll() {
-		List<MemberViewDTO> list = memberRepository.findAll().stream().filter(m-> m.getEdf() == null).map(m -> new MemberViewDTO(m)).collect(Collectors.toList());
+		List<MemberViewDTO> list = memberRepository.findAll().stream().filter(m-> m.getDeletedBy() == null).map(m -> new MemberViewDTO(m)).collect(Collectors.toList());
 		return list;
 	};
 		

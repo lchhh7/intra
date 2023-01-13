@@ -103,12 +103,13 @@ public class AdminMemberController {
      * 사용자관리 > 사용자 수정
      */
     @PutMapping(value = "/admin/member/{id}.do")
-    public ResponseEntity<String> edit(@PathVariable("id") int id,@Validated @RequestBody EditByAdminDTO memberDTO, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<String> edit(@PathVariable("id") int id,@Validated @RequestBody EditByAdminDTO memberDTO ,
+    		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult) throws Exception {
         try {
         	if (bindingResult.hasErrors()) {
              	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
              }
-            memberService.adminEdit(id , memberDTO);
+            memberService.adminEdit(id , memberDTO ,principal);
             return new ResponseEntity<>("사용자 정보를 정상적으로 수정했습니다.", HttpStatus.OK);
         } catch (Exception e) {
         	e.printStackTrace();
@@ -120,9 +121,9 @@ public class AdminMemberController {
      * 사용자관리 > 사용자 삭제
      */
     @DeleteMapping(value = "/admin/member/{id}.do")
-    public ResponseEntity<String> delete(@PathVariable("id") int id) throws Exception {
+    public ResponseEntity<String> delete(@PathVariable("id") int id , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
-            memberService.delete(id);
+            memberService.delete(id, principal);
             return new ResponseEntity<>("사용자 정보를 정상적으로 삭제했습니다.", HttpStatus.OK);
         } catch (Exception e) {
         	e.printStackTrace();

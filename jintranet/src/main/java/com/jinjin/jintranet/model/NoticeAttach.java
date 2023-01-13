@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-public class NoticeAttach {
+public class NoticeAttach extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,23 +38,15 @@ public class NoticeAttach {
 	
 	private Long fileSize;
 	
-	private Integer crtId;
-	
-	private Integer delId;
-	
-	private LocalDate delDt;
-
 	@Builder
 	public NoticeAttach(Integer id, Notice notice, String path, String originalFileName, String storedFileName,
-			Long fileSize, Integer crtId, Integer delId, LocalDate delDt) {
+			Long fileSize) {
 		this.id = id;
 		this.notice = notice;
 		this.path = path;
 		this.originalFileName = originalFileName;
 		this.storedFileName = storedFileName;
 		this.fileSize = fileSize;
-		this.crtId = crtId;
-		this.delId = delId;
-		this.delDt = delDt;
 	}
+	
 }

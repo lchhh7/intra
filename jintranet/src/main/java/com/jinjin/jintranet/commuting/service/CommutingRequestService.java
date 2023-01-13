@@ -62,7 +62,7 @@ public class CommutingRequestService {
 		commutingRequest.setApproveDt(LocalDateTime.now());
 		
 		
-		if(!commutingRequest.getType().equals("O")) {
+		if(requestCommutingRequest.getStatus().equals("Y")) {
 			Commuting commuting = new Commuting();
 			commuting.setAttendYn(commutingRequest.getType());
 			commuting.setCommutingTm(DateUtils.toLocalDateTime(commutingRequest.getRequestDt(), commutingRequest.getRequestTm()));

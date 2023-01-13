@@ -26,15 +26,32 @@ public class QCommutingRequest extends EntityPathBase<CommutingRequest> {
 
     public static final QCommutingRequest commutingRequest = new QCommutingRequest("commutingRequest");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final QMember approve;
 
     public final DateTimePath<java.time.LocalDateTime> approveDt = createDateTime("approveDt", java.time.LocalDateTime.class);
 
     public final StringPath content = createString("content");
 
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> crtDt = _super.crtDt;
+
+    //inherited
+    public final StringPath deletedBy = _super.deletedBy;
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final QMember member;
+
+    //inherited
+    public final StringPath ModifiedBy = _super.ModifiedBy;
+
+    //inherited
+    public final StringPath modifiedBy = _super.modifiedBy;
 
     public final StringPath requestDt = createString("requestDt");
 
@@ -43,6 +60,9 @@ public class QCommutingRequest extends EntityPathBase<CommutingRequest> {
     public final StringPath status = createString("status");
 
     public final StringPath type = createString("type");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> udtDt = _super.udtDt;
 
     public QCommutingRequest(String variable) {
         this(CommutingRequest.class, forVariable(variable), INITS);
