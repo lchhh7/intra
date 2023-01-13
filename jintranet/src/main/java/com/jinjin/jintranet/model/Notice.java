@@ -49,7 +49,7 @@ public class Notice extends BaseEntity{
 	@JoinColumn(name = "memberId")
 	private Member member;
 	
-	//@OnDelete(action = OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@OneToMany(mappedBy = "notice", cascade = CascadeType.PERSIST)
 	private List<NoticeAttach> attaches;
 	
