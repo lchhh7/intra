@@ -17,4 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
 	
 	@Query(value="select * from member where deletedBy is null" , nativeQuery = true)
 	List<Member> findWorkers();
+	
+	@Query(value="select * from member where deletedBy is null and createdBy='kakao' and memberId= ?1" , nativeQuery = true)
+	Member findOAuthById(String memberId);
 }

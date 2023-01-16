@@ -16,9 +16,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,7 +46,6 @@ public class Notice extends BaseEntity{
 	@JoinColumn(name = "memberId")
 	private Member member;
 	
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@OneToMany(mappedBy = "notice", cascade = CascadeType.PERSIST)
 	private List<NoticeAttach> attaches;
 	

@@ -1,17 +1,13 @@
 package com.jinjin.jintranet.member.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -141,6 +137,11 @@ public class MemberService {
 			return new IllegalArgumentException("승인자를 조회하는중 오류가 발생했습니다"); 
 		});
 	}
+	@Transactional
+	public Member findOAuthById(String memberId) {
+		return memberRepository.findOAuthById(memberId);
+	}
+	
 	
 	@Transactional
 	public List<MemberViewDTO> findAll() {

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -57,6 +58,7 @@ public class Member extends BaseEntity{
 	@Transient
 	private Integer add;
 	
+	@Builder
 	public Member(String memberId, String password, String name, String phoneNo, String mobileNo,
 			PositionType position, DepartmentType department, String useColor, RoleType role) {
 		this.memberId = memberId;

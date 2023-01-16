@@ -5,14 +5,21 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +27,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jinjin.jintranet.commuting.service.CommutingService;
 import com.jinjin.jintranet.member.dto.MemberEditDTO;
 import com.jinjin.jintranet.member.dto.MemberSaveDTO;
 import com.jinjin.jintranet.member.dto.PasswordEditDTO;
 import com.jinjin.jintranet.member.service.MemberService;
 import com.jinjin.jintranet.model.Commuting;
+import com.jinjin.jintranet.model.KakaoProfile;
+import com.jinjin.jintranet.model.Member;
+import com.jinjin.jintranet.model.OAuthToken;
 import com.jinjin.jintranet.model.Schedule;
 import com.jinjin.jintranet.notice.dto.NoticeSearchDTO;
 import com.jinjin.jintranet.notice.service.NoticeService;
@@ -45,6 +58,9 @@ public class MemberController {
 	
 	private NoticeService noticeService;
 	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+	
 	
 	
 	public MemberController(MemberService memberService, ScheduleService scheduleService,
@@ -59,6 +75,71 @@ public class MemberController {
 	public String loginPage() {
 		return "login/index";
 	}
+	
+	/*@GetMapping("/auth/kakao/callback")
+	public String kakaoCallback(String code) { // Data를 리턴해주는 컨트롤러 함수
+
+		RestTemplate rt = new RestTemplate();
+		RestTemplate rt2 = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("grant_type", "authorization_code");
+		params.add("client_id", "817064497bd340a285e9af9786027c10");
+		params.add("redirect_uri", "http://localhost:8080/jintranet/auth/kakao/callback");
+		params.add("code", code);
+
+		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
+
+		ResponseEntity<String> response = rt.exchange(
+				"https://kauth.kakao.com/oauth/token", HttpMethod.POST, kakaoTokenRequest, String.class);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		OAuthToken oauthToken = null;
+		try {
+			oauthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		// HttpHeader 오브젝트 생성
+		HttpHeaders headers2 = new HttpHeaders();
+		headers2.add("Authorization", "Bearer "+oauthToken.getAccess_token());
+		headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+				
+		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = 
+				new HttpEntity<>(headers2);
+		
+		ResponseEntity<String> response2 = rt2.exchange(
+				"https://kapi.kakao.com/v2/user/me",
+				HttpMethod.POST,
+				kakaoProfileRequest2,
+				String.class
+		);
+		
+		ObjectMapper objectMapper2 = new ObjectMapper();
+		KakaoProfile kakaoProfile = null;
+		try {
+			kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Member kakaoMember = Member.builder()
+				.memberId(kakaoProfile.getKakao_account().getEmail()+"_"+kakaoProfile.getId())
+				.password(encoder.encode(code))
+				.build();
+		kakaoMember.setCreatedBy("kakao");
+		
+		if(memberService.findOAuthById(kakaoMember.getMemberId()) == null) {
+			memberService.write(new MemberSaveDTO(kakaoMember));
+		}
+		return "main/index";
+	}*/
+	
 	
 	@GetMapping(value = "/main.do")
     public String main(Model model, HttpServletRequest request, 
