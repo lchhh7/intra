@@ -87,7 +87,7 @@ public class MemberController {
 
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
-		params.add("client_id", "817064497bd340a285e9af9786027c10");
+		params.add("client_id", "temp");
 		params.add("redirect_uri", "http://localhost:8080/jintranet/auth/kakao/callback");
 		params.add("code", code);
 
